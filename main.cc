@@ -11,11 +11,9 @@ int main() {
         std::cerr << "Error: Could not open word list file.\n";
         return 1;
     }
+
     std::vector<std::string> candidates = wordle.read_candidates(word_list_file);
-    std::cout << candidates.size() << std::endl;
-    for(std::string s : candidates){
-        std::cout << s << "\n" << std::endl;
-    }
+    
     if (candidates.empty()) {
         std::cerr << "Error: No valid candidates found in word list.\n";
         return 1;
