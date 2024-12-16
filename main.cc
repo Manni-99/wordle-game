@@ -29,10 +29,6 @@ int main() {
 
         std::vector<std::string> filtered = wordle.filter_candidates(candidates, wrong, correct, misplaced);
         
-        for(std::string s : filtered){
-        std::cout << s << "\n" << std::endl;
-    } 
-        
         if (filtered.empty()) {
             std::cout << "No solutions match the criteria. Check your input!\n";
             break;
@@ -43,8 +39,8 @@ int main() {
             std::cout << word << '\n';
         }
 
-        if (filtered.size() <= 1) {
-            std::cout << "Solution found or reduced enough.\n";
+        if (filtered.size() == 1) {
+            std::cout << "Solution found.\n";
             break;
         }
     }

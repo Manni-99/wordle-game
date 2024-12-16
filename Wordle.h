@@ -15,6 +15,7 @@ using letters_and_indices = std::map<size_type, std::string>;
 class Wordle
 {
 public:
+
     struct wrong_fn
     {
         wrong_fn(const std::string &letters);
@@ -65,12 +66,13 @@ public:
     void append(letters_and_indices &dest, const letters_and_indices &src);
     std::tuple<std::string, letters_and_indices, letters_and_indices> prompt();
 
-    
-private:
     bool contains_any_of(const std::string &s, const std::string &cs);
     bool contains_at(const std::string &s, char c, size_type pos);
     static bool contains_but_not_at(const std::string &s, char c, size_type pos);
     letters_and_indices build_list(const std::string &line);
 };
+    
+//private:
+    
 
 #endif
