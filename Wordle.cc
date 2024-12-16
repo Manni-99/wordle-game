@@ -155,25 +155,3 @@ std::tuple<std::string, letters_and_indices, letters_and_indices> Wordle::prompt
     return {wrong, corr, misp};
 }
 
-// Function to filter candidates
-std::vector<std::string> Wordle::filter_candidates(const std::vector<std::string> &candidates,
-                                                   const std::string &wrong_letters,
-                                                   const letters_and_indices &correct_positions,
-                                                   const letters_and_indices &misplaced_positions)
-{
-    std::vector<std::string> filtered_candidates;
-
-    auto wrong = wrong_fn(wrong_letters);
-    auto correct = correct_fn(correct_positions);
-    auto misplaced = misplaced_fn(misplaced_positions);
-
-    for (const auto &candidate : candidates)
-    {
-        if (!wrong(candidate) && correct(candidate) && misplaced(candidate))
-        {
-            filtered_candidates.push_back(candidate);
-        }
-    }
-
-    return filtered_candidates;
-}

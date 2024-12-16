@@ -57,11 +57,6 @@ public:
     };
 
     std::vector<std::string> read_candidates(std::istream &input);
-    std::vector<std::string> filter_candidates(const std::vector<std::string> &candidates,
-                                                       const std::string &wrong_letters,
-                                                       const letters_and_indices &correct_positions,
-                                                       const letters_and_indices &misplaced_positions);
-
     void do_filter(std::vector<std::string> &c, std::string wrong,
                    letters_and_indices green, letters_and_indices yellow);
 
