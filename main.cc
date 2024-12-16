@@ -6,9 +6,6 @@
 #include <string>
 #include <vector>
 
-// Function declaration for do_filter
-void do_filter(std::vector<std::string>& c, std::string wrong, 
-               letters_and_indices green, letters_and_indices yellow);
 
 int main(int argc, char *argv[])
 {
@@ -56,7 +53,7 @@ int main(int argc, char *argv[])
         }
         
         // Call do_filter to filter candidates
-        do_filter(candidates, wrong, correct, misplaced);
+        wordle.do_filter(candidates, wrong, correct, misplaced);
 
         // Check filtered candidates
         if (candidates.empty())

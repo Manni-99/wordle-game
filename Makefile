@@ -5,7 +5,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -pedantic-errors
 # Project name and source files
 TARGET = wordle
 TEST_TARGET = wordle_tests
-SOURCES = main.cc Wordle.cc  # main.cc is for the main program only
+SOURCES = Wordle.cc main.cc  # main.cc is for the main program only
 HEADERS = Wordle.h
 TEST_SOURCES = WordleUnitTests.cc  # Test source file
 OBJECTS = $(SOURCES:.cc=.o)  # Object files for the main program

@@ -64,26 +64,31 @@ TEST_F(WordleUnitTests, FilterCandidates_RemovesInvalidWords) {
 
     // Case 1: Filter out words with wrong letters
     std::string wrong_letters = "a";
-    letters_and_indices correct_positions;
-    letters_and_indices misplaced_positions;
-    auto filtered = wordle.filter_candidates(candidates, wrong_letters, correct_positions, misplaced_positions);
-    EXPECT_EQ(filtered.size(), 2); // "apple" should be removed
-    EXPECT_NE(std::find(filtered.begin(), filtered.end(), "berry"), filtered.end());
-    EXPECT_NE(std::find(filtered.begin(), filtered.end(), "melon"), filtered.end());
-    //EXPECT_NE(std::find(filtered.begin(), filtered.end(), "grape"), filtered.end());
+    letters_and_indices correct_positions; // Empty for this case
+    letters_and_indices misplaced_positions; // Empty for this case
+    wordle.do_filter(candidates, wrong_letters, correct_positions, misplaced_positions);
+
+    
+    EXPECT_EQ(candidates.size(), 2);  // "apple" and "grape" should be removed, so 2 candidates left
+    EXPECT_NE(std::find(candidates.begin(), candidates.end(), "berry"), candidates.end());
+    EXPECT_NE(std::find(candidates.begin(), candidates.end(), "melon"), candidates.end());
 
     // Case 2: Keep only words with correct positions
-    correct_positions[0] = "b";
-    filtered = wordle.filter_candidates(candidates, "", correct_positions, misplaced_positions);
-    EXPECT_EQ(filtered.size(), 1); 
-    EXPECT_EQ(filtered[0], "berry");
+    correct_positions[0] = "b";  // "berry" is the only word where 'b' is at position 0
+    wordle.do_filter(candidates, "", correct_positions, misplaced_positions);
+
+    EXPECT_EQ(candidates.size(), 1);  // Only "berry" should remain
+    EXPECT_EQ(candidates[0], "berry");
 
     // Case 3: Words with misplaced letters
-    misplaced_positions[1] = "r"; 
-    filtered = wordle.filter_candidates(candidates, "", correct_positions, misplaced_positions);
-    EXPECT_EQ(filtered.size(), 1); 
-    EXPECT_EQ(filtered[0], "berry");
+    misplaced_positions[1] = "r";  // "berry" should be the only word with 'r' at position 1
+    wordle.do_filter(candidates, "", correct_positions, misplaced_positions);
+
+    EXPECT_EQ(candidates.size(), 1);  // Only "berry" should remain
+    EXPECT_EQ(candidates[0], "berry");
 }
+
+
 
 TEST_F(WordleUnitTests, Append_MergesMapsCorrectly) {
     letters_and_indices map1{{0, "a"}, {1, "b"}};

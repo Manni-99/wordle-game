@@ -61,8 +61,10 @@ public:
                                                        const std::string &wrong_letters,
                                                        const letters_and_indices &correct_positions,
                                                        const letters_and_indices &misplaced_positions);
+                                                       
     void do_filter(std::vector<std::string> &c, std::string wrong,
                    letters_and_indices green, letters_and_indices yellow);
+
     void append(letters_and_indices &dest, const letters_and_indices &src);
     std::tuple<std::string, letters_and_indices, letters_and_indices> prompt();
 

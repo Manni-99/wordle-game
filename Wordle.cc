@@ -104,12 +104,11 @@ letters_and_indices Wordle::build_list(const std::string &line)
     }
     return result;
 }
-void do_filter(std::vector<std::string>& candidates, 
+void Wordle::do_filter(std::vector<std::string>& candidates, 
                std::string wrong, 
                letters_and_indices green, 
                letters_and_indices yellow) 
 {
-    // Instantiate functors for each filtering condition
     Wordle::wrong_fn wrong_functor(wrong);
     Wordle::correct_fn green_functor(green);
     Wordle::misplaced_fn yellow_functor(yellow);
