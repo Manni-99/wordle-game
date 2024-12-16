@@ -1,44 +1,81 @@
 #include "Wordle.h"
+#include <iostream>
 #include <fstream>
+#include <sstream>
 #include <tuple>
 #include <string>
-int main() {
+#include <vector>
+
+// Function declaration for do_filter
+void do_filter(std::vector<std::string>& c, std::string wrong, 
+               letters_and_indices green, letters_and_indices yellow);
+
+int main(int argc, char *argv[])
+{
     Wordle wordle;
 
-    // Read candidates
-    std::ifstream word_list_file("wordlist.txt");
-    if (!word_list_file) {
-        std::cerr << "Error: Could not open word list file.\n";
-        return 1;
+    std::vector<std::string> candidates;
+
+    // Load word list from file
+    if (argc > 1)
+    {
+        std::ifstream word_list_file(argv[1]);
+        if (!word_list_file)
+        {
+            std::cerr << "Error: Could not open file " << argv[1] << ".\n";
+            return 1;
+        }
+        candidates = wordle.read_candidates(word_list_file);
     }
 
-    std::vector<std::string> candidates = wordle.read_candidates(word_list_file);
-    
-    if (candidates.empty()) {
-        std::cerr << "Error: No valid candidates found in word list.\n";
+    if (candidates.empty())
+    {
+        std::cerr << "Error: No valid candidates found in the input word list.\n";
         return 1;
     }
-
-    // Here we have to pick a single word from our list of candidates
-
-    // Interact with the user
-    while (true) {
+    letters_and_indices green_letters;
+    letters_and_indices yellow_letters;
+    // Main game loop
+    while (true)
+    {
+        // Prompt user for input
         auto [wrong, correct, misplaced] = wordle.prompt();
 
-        std::vector<std::string> filtered = wordle.filter_candidates(candidates, wrong, correct, misplaced);
+        // Merge green and yellow sets (if applicable)
+        wordle.append(green_letters, correct);
+        wordle.append(yellow_letters, misplaced);
+
+        // Update the gray set by removing green/yellow letters
+        for (const auto& [index, letter] : correct)
+        {
+            wrong.erase(std::remove(wrong.begin(), wrong.end(), letter[0]), wrong.end());
+        }
+        for (const auto& [index, letter] : misplaced)
+        {
+            wrong.erase(std::remove(wrong.begin(), wrong.end(), letter[0]), wrong.end());
+        }
         
-        if (filtered.empty()) {
+        // Call do_filter to filter candidates
+        do_filter(candidates, wrong, correct, misplaced);
+
+        // Check filtered candidates
+        if (candidates.empty())
+        {
             std::cout << "No solutions match the criteria. Check your input!\n";
             break;
         }
 
+        // Display filtered candidates
         std::cout << "Filtered candidates:\n";
-        for (const auto &word : filtered) {
+        for (const auto &word : candidates)
+        {
             std::cout << word << '\n';
         }
 
-        if (filtered.size() == 1) {
-            std::cout << "Solution found.\n";
+        // Stop if a single solution is found
+        if (candidates.size() == 1)
+        {
+            std::cout << "Solution found: " << candidates[0] << '\n';
             break;
         }
     }

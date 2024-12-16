@@ -104,6 +104,25 @@ letters_and_indices Wordle::build_list(const std::string &line)
     }
     return result;
 }
+void do_filter(std::vector<std::string>& candidates, 
+               std::string wrong, 
+               letters_and_indices green, 
+               letters_and_indices yellow) 
+{
+    // Instantiate functors for each filtering condition
+    Wordle::wrong_fn wrong_functor(wrong);
+    Wordle::correct_fn green_functor(green);
+    Wordle::misplaced_fn yellow_functor(yellow);
+
+    // Remove invalid candidates from the vector using the functors
+    candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
+                                    [&](const std::string& candidate) {
+                                        return wrong_functor(candidate) || 
+                                               !green_functor(candidate) || 
+                                               !yellow_functor(candidate);  
+                                    }),
+                     candidates.end());
+}
 
 void Wordle::append(std::map<unsigned long, std::string>& map1, const std::map<unsigned long, std::string>& map2) {
     map1.insert(map2.begin(), map2.end());
