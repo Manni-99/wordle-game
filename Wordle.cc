@@ -127,20 +127,29 @@ void Wordle::append(std::map<unsigned long, std::string>& map1, const std::map<u
     map1.insert(map2.begin(), map2.end());
 }
 
-std::tuple<std::string, letters_and_indices, letters_and_indices> Wordle::prompt()
-{
+std::string to_lowercase(const std::string& input) {
+    std::string result = input;
+    std::transform(result.begin(), result.end(), result.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    return result;
+}
+
+std::tuple<std::string, letters_and_indices, letters_and_indices> Wordle::prompt() {
     std::string wrong;
-    std::cout << "enter wrong letters (gray):\n";
+    std::cout << "Enter wrong letters (gray):\n";
     std::getline(std::cin, wrong);
+    wrong = to_lowercase(wrong);  // Convert the input to lowercase
 
     std::string correct;
-    std::cout << "enter correct letters and the letter index (green)*:\n";
+    std::cout << "Enter correct letters and the letter index (green)*:\n";
     std::getline(std::cin, correct);
+    correct = to_lowercase(correct);  // Convert the input to lowercase
     auto corr = build_list(correct);
 
     std::string misplaced;
-    std::cout << "enter misplaced letters and letter index (yellow)*:\n";
+    std::cout << "Enter misplaced letters and letter index (yellow)*:\n";
     std::getline(std::cin, misplaced);
+    misplaced = to_lowercase(misplaced);  // Convert the input to lowercase
     auto misp = build_list(misplaced);
 
     return {wrong, corr, misp};
